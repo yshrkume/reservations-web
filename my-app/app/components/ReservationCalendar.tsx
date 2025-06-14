@@ -344,7 +344,7 @@ export default function ReservationCalendar() {
         <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">義田寿司予約フォーム</h1>
+              <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">義田鮨予約フォーム</h1>
             </div>
             <div className="flex items-center space-x-4 sm:space-x-6">
               <button
