@@ -388,7 +388,7 @@ export default function ReservationCalendar() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gradient-to-r from-slate-50 to-indigo-50">
                   <tr>
-                    <th className="sticky left-0 bg-gradient-to-r from-slate-50 to-indigo-50 px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider border-r border-indigo-100 min-w-16 sm:min-w-20">
+                    <th className="sticky left-0 z-20 bg-gradient-to-r from-slate-50 to-indigo-50 px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider border-r border-indigo-100 w-20 sm:w-24 min-w-20 sm:min-w-24">
                       時間
                     </th>
                     {schedule.map((day) => {
@@ -396,7 +396,7 @@ export default function ReservationCalendar() {
                       const today = new Date();
                       const isToday = date.toDateString() === today.toDateString();
                       return (
-                        <th key={day.date} className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-bold text-slate-700 uppercase tracking-wider border-r border-indigo-100 last:border-r-0 min-w-16 sm:min-w-20">
+                        <th key={day.date} className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-bold text-slate-700 uppercase tracking-wider border-r border-indigo-100 last:border-r-0 w-16 sm:w-20 min-w-16 sm:min-w-20">
                           <div className={`${isToday ? 'text-indigo-600 font-black bg-gradient-to-r from-indigo-100 to-purple-100 rounded-lg px-2 py-1' : ''}`}>
                             <div className="text-xs sm:text-sm font-bold">{date.toLocaleDateString('ja-JP', { month: 'short', day: 'numeric' })}</div>
                             <div className="text-xs font-medium mt-1">
@@ -414,21 +414,21 @@ export default function ReservationCalendar() {
                     
                     return (
                       <tr key={slotIndex} className="hover:bg-gradient-to-r hover:from-indigo-50/50 hover:to-purple-50/50 transition-all duration-200">
-                        <td className="sticky left-0 bg-white/80 backdrop-blur-sm px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm sm:text-base font-semibold border-r border-indigo-100">
+                        <td className="sticky left-0 z-10 bg-white/90 backdrop-blur-sm px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm sm:text-base font-semibold border-r border-indigo-100 w-20 sm:w-24 min-w-20 sm:min-w-24 shadow-sm">
                           <div className="flex items-center text-slate-700">
-                            <span className="font-mono">{timeSlot.time}</span>
+                            <span className="font-mono text-xs sm:text-sm">{timeSlot.time}</span>
                           </div>
                         </td>
                         {schedule.map((day) => {
                           const slot = day.slots[slotIndex];
                           const isSelected = selectedSlot?.date === day.date && selectedSlot?.time === slot.time;
                           return (
-                            <td key={`${day.date}-${slotIndex}`} className="px-2 sm:px-4 py-3 sm:py-4 whitespace-nowrap text-center border-r border-indigo-100/30 last:border-r-0">
+                            <td key={`${day.date}-${slotIndex}`} className="px-1 sm:px-2 py-3 sm:py-4 whitespace-nowrap text-center border-r border-indigo-100/30 last:border-r-0 w-16 sm:w-20">
                               <button
                                 onClick={() => handleSlotClick(day.date, slot.time, slot.available)}
                                 disabled={!slot.available}
                                 className={`
-                                  w-12 h-8 sm:w-14 sm:h-10 rounded-2xl text-xs font-bold transition-all duration-300 transform active:scale-95 sm:hover:scale-110 touch-manipulation flex items-center justify-center
+                                  w-11 h-7 sm:w-12 sm:h-8 rounded-xl text-xs font-bold transition-all duration-300 transform active:scale-95 sm:hover:scale-105 touch-manipulation flex items-center justify-center
                                   ${slot.available 
                                     ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-white hover:from-emerald-500 hover:to-green-600 cursor-pointer shadow-lg hover:shadow-xl ring-2 ring-emerald-200 hover:ring-emerald-300' 
                                     : 'bg-gradient-to-r from-slate-300 to-gray-400 text-slate-600 cursor-not-allowed shadow-sm'
