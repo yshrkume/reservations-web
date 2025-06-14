@@ -392,9 +392,8 @@ export default function ReservationCalendar() {
                       return (
                         <th key={day.date} className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-bold text-slate-700 uppercase tracking-wider border-r border-indigo-100 last:border-r-0 w-16 sm:w-20 min-w-16 sm:min-w-20">
                           <div className={`${isToday ? 'text-indigo-600 font-black bg-gradient-to-r from-indigo-100 to-purple-100 rounded-lg px-2 py-1' : ''}`}>
-                            <div className="text-xs sm:text-sm font-bold">{date.toLocaleDateString('ja-JP', { month: 'short', day: 'numeric' })}</div>
-                            <div className="text-xs font-medium mt-1">
-                              {date.toLocaleDateString('ja-JP', { weekday: 'short' })}
+                            <div className="text-xs sm:text-sm font-bold">
+                              {date.getMonth() + 1}/{date.getDate()}({date.toLocaleDateString('ja-JP', { weekday: 'short' })})
                             </div>
                           </div>
                         </th>
