@@ -354,12 +354,6 @@ export default function ReservationCalendar() {
               >
                 予約管理
               </button>
-              <button
-                onClick={() => setShowAdminDashboard(true)}
-                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-2xl font-bold text-sm hover:from-purple-600 hover:to-pink-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
-              >
-                管理者画面
-              </button>
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full shadow-lg ring-2 ring-emerald-200"></div>
                 <span className="text-sm sm:text-base text-slate-700 font-medium">空席</span>
@@ -546,6 +540,18 @@ export default function ReservationCalendar() {
           </div>
         </div>
       )}
+
+      {/* Footer with subtle admin access */}
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6">
+        <div className="text-center">
+          <button
+            onClick={() => setShowAdminDashboard(true)}
+            className="text-xs text-slate-400 hover:text-slate-600 transition-colors duration-200 px-2 py-1 rounded opacity-50 hover:opacity-100"
+          >
+            管理者
+          </button>
+        </div>
+      </div>
       
       <ReservationManagement 
         showModal={showManageReservations} 
