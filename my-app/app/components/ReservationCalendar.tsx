@@ -465,7 +465,7 @@ export default function ReservationCalendar() {
                 <input
                   type="text"
                   required
-                  className="w-full px-4 py-4 border-2 border-amber-600/30 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/50 focus:border-amber-400 text-base font-semibold text-amber-100 bg-slate-800/90 backdrop-blur-sm transition-all duration-200 placeholder:text-amber-400/70"
+                  className="w-full px-4 py-4 border-2 border-amber-600/30 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/50 focus:border-amber-400 text-base font-semibold text-amber-100 bg-slate-800/90 backdrop-blur-sm transition-all duration-200 placeholder:text-amber-500/30"
                   value={reservationData.name || ''}
                   onChange={(e) => setReservationData({...reservationData, name: e.target.value})}
                   placeholder="山田太郎"
@@ -476,7 +476,7 @@ export default function ReservationCalendar() {
                 <input
                   type="tel"
                   required
-                  className="w-full px-4 py-4 border-2 border-amber-600/30 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/50 focus:border-amber-400 text-base font-semibold text-amber-100 bg-slate-800/90 backdrop-blur-sm transition-all duration-200 placeholder:text-amber-400/70"
+                  className="w-full px-4 py-4 border-2 border-amber-600/30 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/50 focus:border-amber-400 text-base font-semibold text-amber-100 bg-slate-800/90 backdrop-blur-sm transition-all duration-200 placeholder:text-amber-500/30"
                   value={reservationData.phone || ''}
                   onChange={(e) => setReservationData({...reservationData, phone: e.target.value})}
                   placeholder="090-1234-5678"
@@ -485,7 +485,7 @@ export default function ReservationCalendar() {
               <div>
                 <label className="block text-sm font-bold text-amber-200 mb-3">人数</label>
                 <select
-                  className="w-full px-4 py-4 border-2 border-amber-600/30 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/50 focus:border-amber-400 text-base font-semibold text-amber-100 bg-slate-800/90 backdrop-blur-sm transition-all duration-200 placeholder:text-amber-400/70"
+                  className="w-full px-4 py-4 border-2 border-amber-600/30 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/50 focus:border-amber-400 text-base font-semibold text-amber-100 bg-slate-800/90 backdrop-blur-sm transition-all duration-200 placeholder:text-amber-500/30"
                   value={reservationData.guests || 1}
                   onChange={(e) => setReservationData({...reservationData, guests: parseInt(e.target.value)})}
                 >
