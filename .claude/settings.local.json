@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm dev:*)",
+      "Bash(pnpm --dir \"/Users/yshrkume/src/github.com/yshrkume/sushi-reservation/reservations-web/my-app\" dev)",
+      "Bash(pkill:*)",
+      "Bash(pnpm --dir \"/Users/yshrkume/src/github.com/yshrkume/sushi-reservation/reservations-web/my-app\" dev --port 3001)",
+      "Bash(lsof:*)"
+    ],
+    "deny": []
+  }
+}
