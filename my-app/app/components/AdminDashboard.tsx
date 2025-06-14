@@ -24,6 +24,8 @@ interface HourlyOccupancy {
     name: string;
     partySize: number;
     phone: string;
+    startTime?: string;
+    endTime?: string;
   }>;
 }
 
