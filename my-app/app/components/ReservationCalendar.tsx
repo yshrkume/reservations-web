@@ -324,43 +324,43 @@ export default function ReservationCalendar() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-indigo-200 border-t-indigo-600 mx-auto mb-6 shadow-lg"></div>
-            <div className="absolute inset-0 rounded-full h-16 w-16 border-4 border-transparent border-r-indigo-400 animate-pulse mx-auto"></div>
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-amber-200 border-t-amber-500 mx-auto mb-6 shadow-lg"></div>
+            <div className="absolute inset-0 rounded-full h-16 w-16 border-4 border-transparent border-r-amber-300 animate-pulse mx-auto"></div>
           </div>
-          <p className="text-slate-700 font-medium text-lg">読み込み中...</p>
-          <div className="mt-2 w-24 h-1 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full mx-auto animate-pulse"></div>
+          <p className="text-amber-100 font-medium text-lg">読み込み中...</p>
+          <div className="mt-2 w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full mx-auto animate-pulse"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-md shadow-xl border-b border-indigo-100/50">
+      <div className="bg-gradient-to-r from-slate-900/95 to-gray-900/95 backdrop-blur-md shadow-2xl border-b border-amber-500/20">
         <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">義田鮨予約フォーム</h1>
-              <p className="mt-2 text-sm sm:text-base text-slate-600 font-medium">営業時間: 18:00-28:00</p>
+              <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 bg-clip-text text-transparent">義田鮨予約フォーム</h1>
+              <p className="mt-2 text-sm sm:text-base text-amber-200 font-medium">営業時間: 18:00-28:00</p>
             </div>
             <div className="flex items-center space-x-4 sm:space-x-6">
               <button
                 onClick={() => setShowManageReservations(true)}
-                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-2xl font-bold text-sm hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                className="px-4 py-2 bg-gradient-to-r from-amber-600 to-yellow-600 text-black rounded-2xl font-bold text-sm hover:from-amber-500 hover:to-yellow-500 transition-all duration-200 transform hover:scale-105 shadow-lg"
               >
                 予約管理
               </button>
               <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full shadow-lg ring-2 ring-emerald-200"></div>
-                <span className="text-sm sm:text-base text-slate-700 font-medium">空席</span>
+                <div className="w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full shadow-lg ring-2 ring-amber-300"></div>
+                <span className="text-sm sm:text-base text-amber-200 font-medium">空席</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-slate-400 to-gray-500 rounded-full shadow-lg"></div>
-                <span className="text-sm sm:text-base text-slate-700 font-medium">満席</span>
+                <div className="w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-gray-600 to-slate-700 rounded-full shadow-lg"></div>
+                <span className="text-sm sm:text-base text-amber-200 font-medium">満席</span>
               </div>
             </div>
           </div>
@@ -369,20 +369,20 @@ export default function ReservationCalendar() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-12">
-        <div className="bg-white/70 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+        <div className="bg-gradient-to-br from-slate-800/90 to-gray-900/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-amber-500/20 overflow-hidden">
           {/* Calendar Header */}
-          <div className="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 border-b border-indigo-100/30 px-4 sm:px-8 py-6 sm:py-8">
-            <h2 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">予約カレンダー</h2>
-            <p className="text-sm sm:text-base text-slate-600 mt-2 font-medium">空席をタップして予約してください</p>
+          <div className="bg-gradient-to-r from-slate-800/50 to-gray-800/50 border-b border-amber-500/30 px-4 sm:px-8 py-6 sm:py-8">
+            <h2 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">予約カレンダー</h2>
+            <p className="text-sm sm:text-base text-amber-200 mt-2 font-medium">空席をタップして予約してください</p>
           </div>
 
           {/* Calendar Grid */}
           <div className="overflow-x-auto scrollbar-hide">
             <div className="inline-block min-w-full">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gradient-to-r from-slate-50 to-indigo-50">
+              <table className="min-w-full divide-y divide-amber-600/30">
+                <thead className="bg-gradient-to-r from-slate-800 to-gray-800">
                   <tr>
-                    <th className="sticky left-0 z-20 bg-gradient-to-r from-slate-50 to-indigo-50 px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider border-r border-indigo-100 w-20 sm:w-24 min-w-20 sm:min-w-24">
+                    <th className="sticky left-0 z-20 bg-gradient-to-r from-slate-800 to-gray-800 px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold text-amber-300 uppercase tracking-wider border-r border-amber-600/30 w-20 sm:w-24 min-w-20 sm:min-w-24">
                       時間
                     </th>
                     {schedule.map((day) => {
@@ -390,8 +390,8 @@ export default function ReservationCalendar() {
                       const today = new Date();
                       const isToday = date.toDateString() === today.toDateString();
                       return (
-                        <th key={day.date} className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-bold text-slate-700 uppercase tracking-wider border-r border-indigo-100 last:border-r-0 w-16 sm:w-20 min-w-16 sm:min-w-20">
-                          <div className={`${isToday ? 'text-indigo-600 font-black bg-gradient-to-r from-indigo-100 to-purple-100 rounded-lg px-2 py-1' : ''}`}>
+                        <th key={day.date} className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-bold text-amber-300 uppercase tracking-wider border-r border-amber-600/30 last:border-r-0 w-16 sm:w-20 min-w-16 sm:min-w-20">
+                          <div className={`${isToday ? 'text-amber-400 font-black bg-gradient-to-r from-amber-900/50 to-yellow-900/50 rounded-lg px-2 py-1 border border-amber-500/30' : ''}`}>
                             <div className="text-xs sm:text-sm font-bold">
                               {date.getMonth() + 1}/{date.getDate()}({date.toLocaleDateString('ja-JP', { weekday: 'short' })})
                             </div>
@@ -401,14 +401,14 @@ export default function ReservationCalendar() {
                     })}
                   </tr>
                 </thead>
-                <tbody className="bg-white/50 divide-y divide-indigo-100/50">
+                <tbody className="bg-gradient-to-br from-slate-900/20 to-gray-900/20 divide-y divide-amber-600/20">
                   {schedule.length > 0 && schedule[0].slots.map((_, slotIndex) => {
                     const timeSlot = schedule[0].slots[slotIndex];
                     
                     return (
-                      <tr key={slotIndex} className="hover:bg-gradient-to-r hover:from-indigo-50/50 hover:to-purple-50/50 transition-all duration-200">
-                        <td className="sticky left-0 z-10 bg-white/90 backdrop-blur-sm px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm sm:text-base font-semibold border-r border-indigo-100 w-20 sm:w-24 min-w-20 sm:min-w-24 shadow-sm">
-                          <div className="flex items-center text-slate-700">
+                      <tr key={slotIndex} className="hover:bg-gradient-to-r hover:from-amber-900/10 hover:to-yellow-900/10 transition-all duration-200">
+                        <td className="sticky left-0 z-10 bg-gradient-to-r from-slate-800/95 to-gray-800/95 backdrop-blur-sm px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm sm:text-base font-semibold border-r border-amber-600/30 w-20 sm:w-24 min-w-20 sm:min-w-24 shadow-sm">
+                          <div className="flex items-center text-amber-200">
                             <span className="font-mono text-xs sm:text-sm">{timeSlot.time}</span>
                           </div>
                         </td>
@@ -416,17 +416,17 @@ export default function ReservationCalendar() {
                           const slot = day.slots[slotIndex];
                           const isSelected = selectedSlot?.date === day.date && selectedSlot?.time === slot.time;
                           return (
-                            <td key={`${day.date}-${slotIndex}`} className="px-1 sm:px-2 py-3 sm:py-4 whitespace-nowrap text-center border-r border-indigo-100/30 last:border-r-0 w-16 sm:w-20">
+                            <td key={`${day.date}-${slotIndex}`} className="px-1 sm:px-2 py-3 sm:py-4 whitespace-nowrap text-center border-r border-amber-600/20 last:border-r-0 w-16 sm:w-20">
                               <button
                                 onClick={() => handleSlotClick(day.date, slot.time, slot.available)}
                                 disabled={!slot.available}
                                 className={`
                                   w-11 h-7 sm:w-12 sm:h-8 rounded-xl text-xs font-bold transition-all duration-300 transform active:scale-95 sm:hover:scale-105 touch-manipulation flex items-center justify-center
                                   ${slot.available 
-                                    ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-white hover:from-emerald-500 hover:to-green-600 cursor-pointer shadow-lg hover:shadow-xl ring-2 ring-emerald-200 hover:ring-emerald-300' 
-                                    : 'bg-gradient-to-r from-slate-300 to-gray-400 text-slate-600 cursor-not-allowed shadow-sm'
+                                    ? 'bg-gradient-to-r from-amber-500 to-yellow-600 text-black hover:from-amber-400 hover:to-yellow-500 cursor-pointer shadow-lg hover:shadow-xl ring-2 ring-amber-400/50 hover:ring-amber-300' 
+                                    : 'bg-gradient-to-r from-slate-600 to-gray-700 text-slate-400 cursor-not-allowed shadow-sm'
                                   }
-                                  ${isSelected ? 'ring-4 ring-indigo-400 ring-offset-2 bg-gradient-to-r from-indigo-500 to-purple-600' : ''}
+                                  ${isSelected ? 'ring-4 ring-amber-400 ring-offset-2 bg-gradient-to-r from-amber-600 to-yellow-700' : ''}
                                 `}
                                 title={slot.available ? `残り${slot.availableSeats || 0}席` : '満席'}
                               >
@@ -449,11 +449,11 @@ export default function ReservationCalendar() {
 
       {/* Reservation Modal */}
       {showReservationForm && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50 animate-in fade-in duration-300">
-          <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl max-w-md w-full max-h-screen overflow-y-auto border border-white/20 animate-in slide-in-from-bottom duration-500">
-            <div className="px-6 sm:px-8 py-6 sm:py-8 border-b border-indigo-100/50 bg-gradient-to-r from-indigo-50/50 to-purple-50/50">
-              <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">予約確認</h3>
-              <p className="text-sm sm:text-base text-slate-600 mt-2 font-medium">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50 animate-in fade-in duration-300">
+          <div className="bg-gradient-to-br from-slate-900/95 to-gray-900/95 backdrop-blur-xl rounded-3xl shadow-2xl max-w-md w-full max-h-screen overflow-y-auto border border-amber-500/20 animate-in slide-in-from-bottom duration-500">
+            <div className="px-6 sm:px-8 py-6 sm:py-8 border-b border-amber-600/30 bg-gradient-to-r from-slate-800/50 to-gray-800/50">
+              <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">予約確認</h3>
+              <p className="text-sm sm:text-base text-amber-200 mt-2 font-medium">
                 {selectedSlot && new Date(selectedSlot.date).toLocaleDateString('ja-JP', { 
                   year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' 
                 })} {selectedSlot?.time}
@@ -461,31 +461,31 @@ export default function ReservationCalendar() {
             </div>
             <form onSubmit={handleReservationSubmit} className="px-6 sm:px-8 py-6 space-y-6">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-3">お名前</label>
+                <label className="block text-sm font-bold text-amber-200 mb-3">お名前</label>
                 <input
                   type="text"
                   required
-                  className="w-full px-4 py-4 border-2 border-indigo-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-200 focus:border-indigo-400 text-base font-semibold text-slate-800 bg-white/90 backdrop-blur-sm transition-all duration-200 placeholder:text-slate-400"
+                  className="w-full px-4 py-4 border-2 border-amber-600/30 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/50 focus:border-amber-400 text-base font-semibold text-amber-100 bg-slate-800/90 backdrop-blur-sm transition-all duration-200 placeholder:text-amber-400/70"
                   value={reservationData.name || ''}
                   onChange={(e) => setReservationData({...reservationData, name: e.target.value})}
                   placeholder="山田太郎"
                 />
               </div>
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-3">電話番号</label>
+                <label className="block text-sm font-bold text-amber-200 mb-3">電話番号</label>
                 <input
                   type="tel"
                   required
-                  className="w-full px-4 py-4 border-2 border-indigo-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-200 focus:border-indigo-400 text-base font-semibold text-slate-800 bg-white/90 backdrop-blur-sm transition-all duration-200 placeholder:text-slate-400"
+                  className="w-full px-4 py-4 border-2 border-amber-600/30 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/50 focus:border-amber-400 text-base font-semibold text-amber-100 bg-slate-800/90 backdrop-blur-sm transition-all duration-200 placeholder:text-amber-400/70"
                   value={reservationData.phone || ''}
                   onChange={(e) => setReservationData({...reservationData, phone: e.target.value})}
                   placeholder="090-1234-5678"
                 />
               </div>
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-3">人数</label>
+                <label className="block text-sm font-bold text-amber-200 mb-3">人数</label>
                 <select
-                  className="w-full px-4 py-4 border-2 border-indigo-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-200 focus:border-indigo-400 text-base font-semibold text-slate-800 bg-white/90 backdrop-blur-sm transition-all duration-200 placeholder:text-slate-400"
+                  className="w-full px-4 py-4 border-2 border-amber-600/30 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/50 focus:border-amber-400 text-base font-semibold text-amber-100 bg-slate-800/90 backdrop-blur-sm transition-all duration-200 placeholder:text-amber-400/70"
                   value={reservationData.guests || 1}
                   onChange={(e) => setReservationData({...reservationData, guests: parseInt(e.target.value)})}
                 >
@@ -524,13 +524,13 @@ export default function ReservationCalendar() {
                     setShowReservationForm(false);
                     setSelectedSlot(null);
                   }}
-                  className="flex-1 px-6 py-4 text-base font-bold text-slate-700 bg-gradient-to-r from-slate-100 to-gray-200 hover:from-slate-200 hover:to-gray-300 rounded-2xl transition-all duration-200 transform active:scale-95 touch-manipulation shadow-lg"
+                  className="flex-1 px-6 py-4 text-base font-bold text-amber-200 bg-gradient-to-r from-slate-700 to-gray-700 hover:from-slate-600 hover:to-gray-600 rounded-2xl transition-all duration-200 transform active:scale-95 touch-manipulation shadow-lg border border-amber-600/30"
                 >
                   キャンセル
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-6 py-4 text-base font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 rounded-2xl transition-all duration-200 transform active:scale-95 touch-manipulation shadow-lg hover:shadow-xl"
+                  className="flex-1 px-6 py-4 text-base font-bold text-black bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 rounded-2xl transition-all duration-200 transform active:scale-95 touch-manipulation shadow-lg hover:shadow-xl"
                 >
                   予約する
                 </button>
@@ -545,7 +545,7 @@ export default function ReservationCalendar() {
         <div className="text-center">
           <button
             onClick={() => setShowAdminDashboard(true)}
-            className="text-xs text-slate-400 hover:text-slate-600 transition-colors duration-200 px-2 py-1 rounded opacity-50 hover:opacity-100"
+            className="text-xs text-amber-600/50 hover:text-amber-400 transition-colors duration-200 px-2 py-1 rounded opacity-50 hover:opacity-100"
           >
             管理者
           </button>
