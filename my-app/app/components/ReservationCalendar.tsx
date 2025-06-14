@@ -42,11 +42,11 @@ export default function ReservationCalendar() {
 
   const generateTimeSlots = (): string[] => {
     const slots: string[] = [];
-    // Business hours: 18:00-25:00 JST (last reservation time for 3-hour dining)
-    // 15-min intervals for 29 slots (7 hours + 1 slot * 4 slots per hour + 1)
-    for (let hour = 18; hour <= 25; hour++) {
+    // Business hours: 18:00-27:45 JST (extended hours with 27:00 last order)
+    // 15-min intervals for 40 slots (slots 0-39)
+    for (let hour = 18; hour <= 27; hour++) {
       for (let minute = 0; minute < 60; minute += 15) {
-        if (hour === 25 && minute > 0) break; // Stop at 25:00
+        if (hour === 27 && minute > 45) break; // Stop at 27:45
         const displayHour = hour >= 24 ? hour - 24 : hour;
         const timeString = `${displayHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
         slots.push(timeString);
