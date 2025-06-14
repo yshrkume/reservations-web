@@ -76,27 +76,50 @@ export default function ReservationCalendar() {
       const response = await fetch(`${API_BASE_URL}/reservations/availability/batch?startDate=${startDate}&endDate=${endDate}`);
       const data = await response.json();
       
+      console.log('Expected dates:', dates);
+      console.log('Batch API response:', data);
+      console.log('Available dates in response:', Object.keys(data.availability || {}));
+      
       const availabilityData: {[key: string]: {[key: string]: {available: boolean, availableSeats?: number, maxCapacity?: number}}} = {};
       
       if (data.availability) {
         const timeSlots = generateTimeSlots();
         
-        // Process each date from batch response
-        Object.keys(data.availability).forEach(date => {
-          const dayData = data.availability[date];
-          availabilityData[date] = {};
+        // Process each expected date, looking for it in the API response
+        dates.forEach(expectedDate => {
+          availabilityData[expectedDate] = {};
+          
+          // Find the corresponding date in the API response
+          // The API might return dates with timezone offset
+          const apiDateKeys = Object.keys(data.availability);
+          let matchingApiDate = apiDateKeys.find(apiDate => apiDate === expectedDate);
+          
+          if (!matchingApiDate) {
+            // Try to find date with one day offset (timezone issue)
+            const oneDayBefore = new Date(expectedDate);
+            oneDayBefore.setDate(oneDayBefore.getDate() - 1);
+            const oneDayAfter = new Date(expectedDate);
+            oneDayAfter.setDate(oneDayAfter.getDate() + 1);
+            
+            matchingApiDate = apiDateKeys.find(apiDate => 
+              apiDate === oneDayBefore.toISOString().split('T')[0] ||
+              apiDate === oneDayAfter.toISOString().split('T')[0]
+            );
+          }
+          
+          const dayData = matchingApiDate ? data.availability[matchingApiDate] : null;
           
           if (dayData && dayData.availableSlots) {
             timeSlots.forEach((timeString, index) => {
               const slotData = dayData.availableSlots.find((slot: any) => slot.slot === index);
               if (slotData) {
-                availabilityData[date][timeString] = {
+                availabilityData[expectedDate][timeString] = {
                   available: true,
                   availableSeats: slotData.availableSeats,
                   maxCapacity: slotData.maxCapacity
                 };
               } else {
-                availabilityData[date][timeString] = {
+                availabilityData[expectedDate][timeString] = {
                   available: false,
                   availableSeats: 0,
                   maxCapacity: 6
@@ -106,7 +129,7 @@ export default function ReservationCalendar() {
           } else {
             // If no data for this date, mark all slots as unavailable
             timeSlots.forEach((timeString) => {
-              availabilityData[date][timeString] = {
+              availabilityData[expectedDate][timeString] = {
                 available: false,
                 availableSeats: 0,
                 maxCapacity: 6
@@ -116,6 +139,7 @@ export default function ReservationCalendar() {
         });
       }
       
+      console.log('Processed availability data:', availabilityData);
       return availabilityData;
     } catch (error) {
       console.error('Failed to fetch availability:', error);
