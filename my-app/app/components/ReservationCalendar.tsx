@@ -69,33 +69,51 @@ export default function ReservationCalendar() {
   const fetchAvailability = async () => {
     try {
       const dates = generateDateRange();
+      const startDate = dates[0];
+      const endDate = dates[dates.length - 1];
+      
+      // Use batch endpoint for performance optimization
+      const response = await fetch(`${API_BASE_URL}/reservations/availability/batch?startDate=${startDate}&endDate=${endDate}`);
+      const data = await response.json();
+      
       const availabilityData: {[key: string]: {[key: string]: {available: boolean, availableSeats?: number, maxCapacity?: number}}} = {};
       
-      for (const date of dates) {
-        const response = await fetch(`${API_BASE_URL}/reservations/availability/${date}`);
-        const data = await response.json();
+      if (data.availability) {
+        const timeSlots = generateTimeSlots();
         
-        if (data.availableSlots) {
-          const timeSlots = generateTimeSlots();
+        // Process each date from batch response
+        Object.keys(data.availability).forEach(date => {
+          const dayData = data.availability[date];
           availabilityData[date] = {};
           
-          timeSlots.forEach((timeString, index) => {
-            const slotData = data.availableSlots.find((slot: any) => slot.slot === index);
-            if (slotData) {
-              availabilityData[date][timeString] = {
-                available: true,
-                availableSeats: slotData.availableSeats,
-                maxCapacity: slotData.maxCapacity
-              };
-            } else {
+          if (dayData && dayData.availableSlots) {
+            timeSlots.forEach((timeString, index) => {
+              const slotData = dayData.availableSlots.find((slot: any) => slot.slot === index);
+              if (slotData) {
+                availabilityData[date][timeString] = {
+                  available: true,
+                  availableSeats: slotData.availableSeats,
+                  maxCapacity: slotData.maxCapacity
+                };
+              } else {
+                availabilityData[date][timeString] = {
+                  available: false,
+                  availableSeats: 0,
+                  maxCapacity: 6
+                };
+              }
+            });
+          } else {
+            // If no data for this date, mark all slots as unavailable
+            timeSlots.forEach((timeString) => {
               availabilityData[date][timeString] = {
                 available: false,
                 availableSeats: 0,
                 maxCapacity: 6
               };
-            }
-          });
-        }
+            });
+          }
+        });
       }
       
       return availabilityData;
