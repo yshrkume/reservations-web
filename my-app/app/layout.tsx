@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "寿司予約システム",
-  description: "高級寿司店のオンライン予約システム",
+  title: "義田寿司予約フォーム",
+  description: "義田寿司のオンライン予約システム",
 };
 
 export const viewport = {
