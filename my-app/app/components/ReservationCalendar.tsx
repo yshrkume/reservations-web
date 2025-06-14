@@ -345,7 +345,6 @@ export default function ReservationCalendar() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
             <div>
               <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">義田寿司予約フォーム</h1>
-              <p className="mt-2 text-sm sm:text-base text-slate-600 font-medium">営業時間: 18:00-28:00 JST | 27:00まで予約受付 | 定員6名</p>
             </div>
             <div className="flex items-center space-x-4 sm:space-x-6">
               <button
