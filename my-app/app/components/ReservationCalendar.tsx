@@ -72,74 +72,111 @@ export default function ReservationCalendar() {
       const startDate = dates[0];
       const endDate = dates[dates.length - 1];
       
-      // Use batch endpoint for performance optimization
-      const response = await fetch(`${API_BASE_URL}/reservations/availability/batch?startDate=${startDate}&endDate=${endDate}`);
-      const data = await response.json();
+      // Try batch endpoint first for performance
+      try {
+        const response = await fetch(`${API_BASE_URL}/reservations/availability/batch?startDate=${startDate}&endDate=${endDate}`);
+        const data = await response.json();
+        
+        if (data.availability && Object.keys(data.availability).length > 0) {
+          const availabilityData: {[key: string]: {[key: string]: {available: boolean, availableSeats?: number, maxCapacity?: number}}} = {};
+          const timeSlots = generateTimeSlots();
+          
+          // Process each expected date, looking for it in the API response
+          dates.forEach(expectedDate => {
+            availabilityData[expectedDate] = {};
+            
+            // Find matching date in API response (handle timezone offset)
+            const apiDateKeys = Object.keys(data.availability);
+            let matchingApiDate = apiDateKeys.find(apiDate => apiDate === expectedDate);
+            
+            if (!matchingApiDate) {
+              // Try finding with ±1 day offset for timezone issues
+              const dayBefore = new Date(expectedDate);
+              dayBefore.setDate(dayBefore.getDate() - 1);
+              const dayAfter = new Date(expectedDate);
+              dayAfter.setDate(dayAfter.getDate() + 1);
+              
+              matchingApiDate = apiDateKeys.find(apiDate => 
+                apiDate === dayBefore.toISOString().split('T')[0] ||
+                apiDate === dayAfter.toISOString().split('T')[0]
+              );
+            }
+            
+            const dayData = matchingApiDate ? data.availability[matchingApiDate] : null;
+            
+            if (dayData && dayData.availableSlots) {
+              timeSlots.forEach((timeString, index) => {
+                const slotData = dayData.availableSlots.find((slot: any) => slot.slot === index);
+                if (slotData) {
+                  availabilityData[expectedDate][timeString] = {
+                    available: true,
+                    availableSeats: slotData.availableSeats,
+                    maxCapacity: slotData.maxCapacity
+                  };
+                } else {
+                  availabilityData[expectedDate][timeString] = {
+                    available: false,
+                    availableSeats: 0,
+                    maxCapacity: 6
+                  };
+                }
+              });
+            } else {
+              // Fallback: fetch individual date if no batch data
+              throw new Error(`No data for date ${expectedDate}`);
+            }
+          });
+          
+          return availabilityData;
+        }
+      } catch (batchError) {
+        console.warn('Batch API failed, falling back to individual requests:', batchError);
+      }
       
-      console.log('Expected dates:', dates);
-      console.log('Batch API response:', data);
-      console.log('Available dates in response:', Object.keys(data.availability || {}));
-      
+      // Fallback: Use individual API calls
       const availabilityData: {[key: string]: {[key: string]: {available: boolean, availableSeats?: number, maxCapacity?: number}}} = {};
       
-      if (data.availability) {
-        const timeSlots = generateTimeSlots();
-        
-        // Process each expected date, looking for it in the API response
-        dates.forEach(expectedDate => {
-          availabilityData[expectedDate] = {};
+      for (const date of dates) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/reservations/availability/${date}`);
+          const data = await response.json();
           
-          // Find the corresponding date in the API response
-          // The API might return dates with timezone offset
-          const apiDateKeys = Object.keys(data.availability);
-          let matchingApiDate = apiDateKeys.find(apiDate => apiDate === expectedDate);
-          
-          if (!matchingApiDate) {
-            // Try to find date with one day offset (timezone issue)
-            const oneDayBefore = new Date(expectedDate);
-            oneDayBefore.setDate(oneDayBefore.getDate() - 1);
-            const oneDayAfter = new Date(expectedDate);
-            oneDayAfter.setDate(oneDayAfter.getDate() + 1);
+          if (data.availableSlots) {
+            const timeSlots = generateTimeSlots();
+            availabilityData[date] = {};
             
-            matchingApiDate = apiDateKeys.find(apiDate => 
-              apiDate === oneDayBefore.toISOString().split('T')[0] ||
-              apiDate === oneDayAfter.toISOString().split('T')[0]
-            );
-          }
-          
-          const dayData = matchingApiDate ? data.availability[matchingApiDate] : null;
-          
-          if (dayData && dayData.availableSlots) {
             timeSlots.forEach((timeString, index) => {
-              const slotData = dayData.availableSlots.find((slot: any) => slot.slot === index);
+              const slotData = data.availableSlots.find((slot: any) => slot.slot === index);
               if (slotData) {
-                availabilityData[expectedDate][timeString] = {
+                availabilityData[date][timeString] = {
                   available: true,
                   availableSeats: slotData.availableSeats,
                   maxCapacity: slotData.maxCapacity
                 };
               } else {
-                availabilityData[expectedDate][timeString] = {
+                availabilityData[date][timeString] = {
                   available: false,
                   availableSeats: 0,
                   maxCapacity: 6
                 };
               }
             });
-          } else {
-            // If no data for this date, mark all slots as unavailable
-            timeSlots.forEach((timeString) => {
-              availabilityData[expectedDate][timeString] = {
-                available: false,
-                availableSeats: 0,
-                maxCapacity: 6
-              };
-            });
           }
-        });
+        } catch (dateError) {
+          console.error(`Failed to fetch availability for ${date}:`, dateError);
+          // Mark all slots as unavailable for this date
+          const timeSlots = generateTimeSlots();
+          availabilityData[date] = {};
+          timeSlots.forEach((timeString) => {
+            availabilityData[date][timeString] = {
+              available: false,
+              availableSeats: 0,
+              maxCapacity: 6
+            };
+          });
+        }
       }
       
-      console.log('Processed availability data:', availabilityData);
       return availabilityData;
     } catch (error) {
       console.error('Failed to fetch availability:', error);
@@ -192,6 +229,49 @@ export default function ReservationCalendar() {
     setSchedule(scheduleData);
   };
 
+  const refreshSingleDate = async (targetDate: string) => {
+    try {
+      // Force individual API call for immediate accuracy
+      const response = await fetch(`${API_BASE_URL}/reservations/availability/${targetDate}`);
+      const data = await response.json();
+      
+      if (data.availableSlots) {
+        const timeSlots = generateTimeSlots();
+        const updatedSlots = timeSlots.map((timeString, index) => {
+          const slotData = data.availableSlots.find((slot: any) => slot.slot === index);
+          if (slotData) {
+            return {
+              time: timeString,
+              available: true,
+              availableSeats: slotData.availableSeats,
+              maxCapacity: slotData.maxCapacity
+            };
+          } else {
+            return {
+              time: timeString,
+              available: false,
+              availableSeats: 0,
+              maxCapacity: 6
+            };
+          }
+        });
+
+        // Update only the specific date in schedule
+        setSchedule(prevSchedule => 
+          prevSchedule.map(day => 
+            day.date === targetDate 
+              ? { ...day, slots: updatedSlots }
+              : day
+          )
+        );
+      }
+    } catch (error) {
+      console.error(`Failed to refresh date ${targetDate}:`, error);
+      // Fall back to full refresh
+      await refreshSchedule();
+    }
+  };
+
   const handleSlotClick = (date: string, time: string, available: boolean) => {
     if (available) {
       setSelectedSlot({ date, time });
@@ -230,8 +310,8 @@ export default function ReservationCalendar() {
         alert('予約が完了しました！');
         setShowReservationForm(false);
         setSelectedSlot(null);
-        // Refresh schedule
-        await refreshSchedule();
+        // Refresh only the affected date for immediate update
+        await refreshSingleDate(selectedSlot.date);
       } else {
         const errorData = await response.json();
         alert(`予約に失敗しました: ${errorData.message || errorData.error || '不明なエラー'}`);
