@@ -55,6 +55,42 @@ export default function ReservationCalendar() {
     return slots;
   };
 
+  // Calculate maximum bookable seats for a 3-hour reservation starting from a given slot
+  const calculateMaxBookableSeats = (startSlot: number, availableSlots: any[]): number => {
+    const maxSlot = 39;
+    let minAvailableSeats = 6; // Start with max capacity
+    
+    // Calculate which slots would be occupied by a 3-hour reservation
+    const occupiedSlots = [];
+    if (startSlot <= 27) {
+      // Regular hours: 3 hours (12 slots) but don't exceed maxSlot
+      for (let i = 0; i < 12; i++) {
+        const slot = startSlot + i;
+        if (slot <= maxSlot) {
+          occupiedSlots.push(slot);
+        }
+      }
+    } else {
+      // Late night hours (25:00+): reserve until 28:00 (slot 39)
+      for (let slot = startSlot; slot <= maxSlot; slot++) {
+        occupiedSlots.push(slot);
+      }
+    }
+    
+    // Find the minimum available seats across all occupied slots
+    for (const slot of occupiedSlots) {
+      const slotData = availableSlots.find((s: any) => s.slot === slot);
+      if (slotData) {
+        minAvailableSeats = Math.min(minAvailableSeats, slotData.availableSeats);
+      } else {
+        // If any slot is completely unavailable, this time slot can't be booked
+        return 0;
+      }
+    }
+    
+    return minAvailableSeats;
+  };
+
   const generateDateRange = (): string[] => {
     const dates: string[] = [];
     const startDate = new Date('2025-06-20');
@@ -106,20 +142,13 @@ export default function ReservationCalendar() {
             
             if (dayData && dayData.availableSlots) {
               timeSlots.forEach((timeString, index) => {
-                const slotData = dayData.availableSlots.find((slot: any) => slot.slot === index);
-                if (slotData) {
-                  availabilityData[expectedDate][timeString] = {
-                    available: true,
-                    availableSeats: slotData.availableSeats,
-                    maxCapacity: slotData.maxCapacity
-                  };
-                } else {
-                  availabilityData[expectedDate][timeString] = {
-                    available: false,
-                    availableSeats: 0,
-                    maxCapacity: 6
-                  };
-                }
+                // Calculate maximum bookable seats for 3-hour duration starting from this slot
+                const maxAvailableFor3Hours = calculateMaxBookableSeats(index, dayData.availableSlots);
+                availabilityData[expectedDate][timeString] = {
+                  available: maxAvailableFor3Hours > 0,
+                  availableSeats: maxAvailableFor3Hours,
+                  maxCapacity: 6
+                };
               });
             } else {
               // Fallback: fetch individual date if no batch data
@@ -146,20 +175,13 @@ export default function ReservationCalendar() {
             availabilityData[date] = {};
             
             timeSlots.forEach((timeString, index) => {
-              const slotData = data.availableSlots.find((slot: any) => slot.slot === index);
-              if (slotData) {
-                availabilityData[date][timeString] = {
-                  available: true,
-                  availableSeats: slotData.availableSeats,
-                  maxCapacity: slotData.maxCapacity
-                };
-              } else {
-                availabilityData[date][timeString] = {
-                  available: false,
-                  availableSeats: 0,
-                  maxCapacity: 6
-                };
-              }
+              // Calculate maximum bookable seats for 3-hour duration starting from this slot
+              const maxAvailableFor3Hours = calculateMaxBookableSeats(index, data.availableSlots);
+              availabilityData[date][timeString] = {
+                available: maxAvailableFor3Hours > 0,
+                availableSeats: maxAvailableFor3Hours,
+                maxCapacity: 6
+              };
             });
           }
         } catch (dateError) {
@@ -238,22 +260,14 @@ export default function ReservationCalendar() {
       if (data.availableSlots) {
         const timeSlots = generateTimeSlots();
         const updatedSlots = timeSlots.map((timeString, index) => {
-          const slotData = data.availableSlots.find((slot: any) => slot.slot === index);
-          if (slotData) {
-            return {
-              time: timeString,
-              available: true,
-              availableSeats: slotData.availableSeats,
-              maxCapacity: slotData.maxCapacity
-            };
-          } else {
-            return {
-              time: timeString,
-              available: false,
-              availableSeats: 0,
-              maxCapacity: 6
-            };
-          }
+          // Calculate maximum bookable seats for 3-hour duration starting from this slot
+          const maxAvailableFor3Hours = calculateMaxBookableSeats(index, data.availableSlots);
+          return {
+            time: timeString,
+            available: maxAvailableFor3Hours > 0,
+            availableSeats: maxAvailableFor3Hours,
+            maxCapacity: 6
+          };
         });
 
         // Update only the specific date in schedule
